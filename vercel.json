@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/clientes/sonrisa-imperial/index.html" }
+    { "source": "/", "destination": "/clientes/sonrisa-imperial" }
   ],
   "headers": [
     {
