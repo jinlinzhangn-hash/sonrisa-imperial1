@@ -1,0 +1,613 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Datos de relleno: quitar esta línea y robots.txt cuando el contenido sea real -->
+<meta name="robots" content="noindex, nofollow">
+<title>Sonrisa Imperial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spectral:wght@200;300;400&display=swap">
+<script>document.documentElement.classList.add('js');
+if(!document.querySelector('meta[name="viewport"]')){var vp=document.createElement('meta');vp.setAttribute('name','viewport');vp.setAttribute('content','width=device-width, initial-scale=1');document.head.appendChild(vp);}</script>
+
+<style>
+:root{
+  --ground:#FCFCFB;
+  --surface:#F1F1EE;
+  --surface-2:#E9E9E4;
+  --line:#E3E3DE;
+  --line-strong:#CFCFC8;
+  --ink:#14181C;
+  --ink-soft:#5D666E;
+  --ink-faint:#8B9299;
+  --brass:#9C7C42;
+  --on-ink:#FCFCFB;
+  --focus:#9C7C42;
+  --danger:#9E2B25;
+  --btn-hover-bg:#7E6231;
+  --btn-hover-fg:#FCFCFB;
+
+  --fs-xs:.7rem;
+  --fs-sm:.875rem;
+  --fs-base:1rem;
+  --fs-lg:1.125rem;
+  --fs-xl:clamp(1.25rem,2.2vw,1.5rem);
+  --fs-2xl:clamp(1.7rem,3.6vw,2.4rem);
+  --fs-hero:clamp(2.3rem,5vw,3.6rem);
+
+  --pad-x:clamp(1.25rem,5vw,3rem);
+  --pad-y:clamp(3.5rem,7vw,6rem);
+  --r:4px;
+  --ease:cubic-bezier(.2,.65,.3,1);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#101315;
+    --surface:#171B1E;
+    --surface-2:#1F2427;
+    --line:#272C30;
+    --line-strong:#39403F;
+    --ink:#ECEDE9;
+    --ink-soft:#A2ABB2;
+    --ink-faint:#767F86;
+    --brass:#C6A467;
+    --on-ink:#101315;
+    --danger:#E88A82;
+    --btn-hover-bg:#C6A467;
+    --btn-hover-fg:#101315;
+    --focus:#C6A467;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101315;
+  --surface:#171B1E;
+  --surface-2:#1F2427;
+  --line:#272C30;
+  --line-strong:#39403F;
+  --ink:#ECEDE9;
+  --ink-soft:#A2ABB2;
+  --ink-faint:#767F86;
+  --brass:#C6A467;
+  --on-ink:#101315;
+  --danger:#E88A82;
+  --btn-hover-bg:#C6A467;
+  --btn-hover-fg:#101315;
+  --focus:#C6A467;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:var(--fs-base);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:"Spectral",Georgia,serif;font-weight:300;
+  line-height:1.12;letter-spacing:-.01em;text-wrap:balance;margin:0;
+}
+p{margin:0}
+a{color:inherit}
+svg{display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.wrap{width:min(1140px,100%);margin-inline:auto;padding-inline:var(--pad-x)}
+section{padding-block:var(--pad-y)}
+.rule{border-top:1px solid var(--line)}
+
+.eyebrow{
+  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:600;margin:0;
+}
+.lead{font-size:var(--fs-lg);color:var(--ink-soft);line-height:1.6}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.8rem 1.4rem;border-radius:var(--r);border:1px solid transparent;
+  font-size:var(--fs-sm);font-weight:600;letter-spacing:.01em;
+  text-decoration:none;cursor:pointer;
+  transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);
+}
+.btn-primary{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.btn-primary:hover{background:var(--btn-hover-bg);border-color:var(--btn-hover-bg);color:var(--btn-hover-fg)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--ink);background:var(--surface)}
+.btn-lg{padding:1rem 2rem;font-size:var(--fs-base)}
+.btn-block{width:100%}
+
+/* header */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--ground) 92%,transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid transparent;transition:border-color .25s var(--ease);
+}
+.site-header.stuck{border-bottom-color:var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding-block:.85rem}
+.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none}
+.brand svg{width:26px;height:26px;flex:none;color:var(--brass)}
+.brand span{font-family:"Spectral",Georgia,serif;font-size:1.15rem;letter-spacing:.005em}
+.brand b{font-weight:400}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.nav-phone{
+  font-size:var(--fs-sm);color:var(--ink-soft);text-decoration:none;
+  font-variant-numeric:tabular-nums;
+}
+.nav-phone:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding-block:clamp(2.5rem,5vw,4.5rem) clamp(3rem,6vw,5rem)}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.hero h1{font-size:var(--fs-hero);margin-block:1.2rem 1.3rem}
+.hero .lead{max-width:40ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem}
+.trust{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-top:3rem;border-top:1px solid var(--line);
+}
+.trust div{padding:1.1rem 1.2rem 0 0}
+.trust div + div{padding-left:1.2rem;border-left:1px solid var(--line)}
+.trust dt{font-family:"Spectral",Georgia,serif;font-size:1.5rem;line-height:1;font-weight:300}
+.trust dd{margin:.4rem 0 0;font-size:var(--fs-xs);letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+
+/* form panel */
+.panel{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  border-top:2px solid var(--brass);
+  padding:clamp(1.4rem,2.6vw,2rem);
+}
+.panel h2{font-size:var(--fs-xl);margin-bottom:.35rem}
+.panel > p{font-size:var(--fs-sm);color:var(--ink-soft);margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
+.field label,.legend{
+  font-size:var(--fs-xs);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:600;
+}
+.field input,.field select{
+  background:var(--ground);border:1px solid var(--line-strong);border-radius:var(--r);
+  padding:.65rem .75rem;font-size:var(--fs-sm);width:100%;
+  transition:border-color .18s var(--ease);
+}
+.field input::placeholder{color:var(--ink-faint)}
+.field input:hover,.field select:hover{border-color:var(--ink-faint)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px color-mix(in srgb,var(--brass) 16%,transparent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+fieldset{border:0;margin:0 0 .9rem;padding:0;display:flex;flex-direction:column;gap:.35rem}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.slot{position:relative}
+.slot input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.slot span{
+  display:block;text-align:center;padding:.6rem .5rem;font-size:var(--fs-sm);
+  border:1px solid var(--line-strong);border-radius:var(--r);background:var(--ground);
+  transition:border-color .18s var(--ease),background .18s var(--ease),color .18s var(--ease);
+}
+.slot input:hover + span{border-color:var(--ink-faint)}
+.slot input:checked + span{border-color:var(--ink);background:var(--ink);color:var(--on-ink);font-weight:500}
+.slot input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
+.consent{display:grid;grid-template-columns:auto 1fr;gap:.6rem;align-items:start;margin:1.1rem 0 1.2rem}
+.consent input{margin:.2rem 0 0;width:15px;height:15px;accent-color:var(--brass)}
+.consent label{font-size:var(--fs-xs);line-height:1.5;color:var(--ink-soft)}
+.panel small{display:block;margin-top:.85rem;font-size:var(--fs-xs);color:var(--ink-faint);text-align:center}
+.error{display:none;font-size:var(--fs-xs);color:var(--danger);margin-top:.1rem}
+.field.invalid input,.field.invalid select{border-color:var(--danger)}
+.field.invalid .error{display:block}
+.consent.invalid label{color:var(--danger)}
+
+.done{display:none;padding:.5rem 0 1rem;text-align:left}
+.done .tick{width:40px;height:40px;border:1px solid var(--brass);border-radius:50%;display:grid;place-items:center;margin-bottom:1.1rem}
+.done h2{margin-bottom:.5rem}
+.done p{font-size:var(--fs-sm);color:var(--ink-soft)}
+.done dl{margin:1.4rem 0 0;border-top:1px solid var(--line);padding-top:1rem;display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.5rem;font-size:var(--fs-sm)}
+.done dt{color:var(--ink-faint);font-size:var(--fs-xs);letter-spacing:.11em;text-transform:uppercase;font-weight:600;padding-top:.15rem}
+.done dd{margin:0}
+.panel.sent form{display:none}
+.panel.sent .done{display:block}
+
+/* generic sections */
+.head{max-width:52ch;margin-bottom:clamp(2rem,4vw,3rem)}
+.head h2{font-size:var(--fs-2xl);margin-top:.9rem}
+.reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+.reason{padding:1.8rem 1.8rem 0 0}
+.reason + .reason{padding-left:1.8rem;border-left:1px solid var(--line)}
+.reason h3{font-size:var(--fs-xl);margin-bottom:.6rem}
+.reason p{font-size:var(--fs-sm);color:var(--ink-soft)}
+
+/* steps */
+.steps-band{background:var(--surface);border-block:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,3vw,3rem)}
+.step{display:flex;flex-direction:column;gap:.7rem}
+.step .num{
+  font-family:"Spectral",Georgia,serif;font-size:.9rem;font-weight:400;
+  color:var(--brass);letter-spacing:.08em;
+  padding-bottom:.7rem;border-bottom:1px solid var(--line-strong);
+}
+.step h3{font-size:var(--fs-lg);font-family:"Archivo",sans-serif;font-weight:600;letter-spacing:0}
+.step p{font-size:var(--fs-sm);color:var(--ink-soft)}
+
+/* clínica */
+.clinic{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.quote{
+  font-family:"Spectral",Georgia,serif;font-weight:200;
+  font-size:clamp(1.35rem,2.6vw,1.8rem);line-height:1.4;
+}
+.quote-by{margin-top:1.2rem;font-size:var(--fs-xs);letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+.facts{display:grid;gap:0;border-top:1px solid var(--line)}
+.fact{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.fact dt{font-size:var(--fs-xs);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;padding-top:.2rem}
+.fact dd{margin:0;font-size:var(--fs-sm);line-height:1.7}
+.fact a{text-decoration:none;border-bottom:1px solid var(--line-strong)}
+.fact a:hover{border-color:var(--ink)}
+.schedule{display:grid;grid-template-columns:auto 1fr;gap:.1rem 1.5rem;font-variant-numeric:tabular-nums}
+.schedule span:nth-child(odd){color:var(--ink-faint)}
+.status{
+  display:inline-flex;align-items:center;gap:.45rem;margin-top:.6rem;
+  font-size:var(--fs-xs);letter-spacing:.09em;text-transform:uppercase;font-weight:600;color:var(--brass);
+}
+.status i{width:5px;height:5px;border-radius:50%;background:var(--brass);display:block}
+
+/* cta final */
+.final{background:var(--ink);color:var(--on-ink)}
+.final .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem}
+.final h2{font-size:var(--fs-2xl);color:var(--on-ink);max-width:18ch}
+.final p{margin-top:.8rem;font-size:var(--fs-sm);color:color-mix(in srgb,var(--on-ink) 68%,transparent);max-width:34ch}
+.final .btn{background:var(--ground);color:var(--ink);border-color:var(--ground)}
+.final .btn:hover{background:var(--btn-hover-bg);border-color:var(--btn-hover-bg);color:var(--btn-hover-fg)}
+
+/* footer */
+.site-footer{padding-block:2.2rem;border-top:1px solid var(--line);font-size:var(--fs-xs);color:var(--ink-faint)}
+.site-footer .wrap{display:flex;flex-wrap:wrap;gap:.6rem 2rem;align-items:center;justify-content:space-between}
+.site-footer a{text-decoration:none}
+.site-footer a:hover{color:var(--ink)}
+.foot-links{display:flex;gap:1.5rem}
+
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(10px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:var(--d,0s)}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:2.5rem}
+  .clinic{grid-template-columns:1fr;gap:2.5rem}
+  .final .wrap{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:760px){
+  .reasons,.steps{grid-template-columns:1fr}
+  .reason{padding:1.4rem 0}
+  .reason + .reason{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .trust{grid-template-columns:1fr}
+  .trust div{padding:.9rem 0}
+  .trust div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .steps{gap:2rem}
+  .fact{grid-template-columns:1fr;gap:.25rem}
+  .nav-phone{display:none}
+  .row2{grid-template-columns:1fr;gap:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .js .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+html{scroll-behavior:smooth}
+section[id],div[id]{scroll-margin-top:80px}
+</style>
+
+<header class="site-header" id="header">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+        <circle cx="12" cy="12" r="10.2" stroke-width="1"></circle>
+        <path d="M6.6 13.1a5.4 5.4 0 0 0 10.8 0" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <span>Sonrisa <b>Imperial</b></span>
+    </a>
+    <div class="nav-right">
+      <a class="nav-phone" href="tel:+34912345678">+34 912 34 56 78</a>
+      <a class="btn btn-primary" href="#cita" data-cta>Pedir cita</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow reveal">Clínica dental · Madrid</p>
+        <h1 class="reveal" style="--d:.06s">Tu próxima cita empieza aquí.</h1>
+        <p class="lead reveal" style="--d:.12s">Elige el día y la franja que mejor te vengan. Te confirmamos por teléfono en menos de dos horas.</p>
+        <div class="hero-actions reveal" style="--d:.18s">
+          <a class="btn btn-primary btn-lg" href="#cita" data-cta>Pedir cita</a>
+          <a class="btn btn-ghost btn-lg" href="tel:+34912345678">Llamar ahora</a>
+        </div>
+        <dl class="trust reveal" style="--d:.24s">
+          <div><dt>Sin coste</dt><dd>Primera visita y diagnóstico</dd></div>
+          <div><dt>12 meses</dt><dd>Financiación sin intereses</dd></div>
+          <div><dt>2 horas</dt><dd>Tiempo medio de respuesta</dd></div>
+        </dl>
+      </div>
+
+      <div class="panel reveal" id="cita" style="--d:.1s">
+        <form id="cita-form" novalidate>
+          <h2>Pedir cita</h2>
+          <p>Rellena estos datos y nos ponemos en contacto contigo.</p>
+
+          <div class="field">
+            <label for="nombre">Nombre y apellidos</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="María López" required>
+            <span class="error">Escribe tu nombre para poder llamarte.</span>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="tel">Teléfono</label>
+              <input id="tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="600 000 000" required>
+              <span class="error">Necesitamos un teléfono válido.</span>
+            </div>
+            <div class="field">
+              <label for="email">Email <span style="text-transform:none;letter-spacing:0">(opcional)</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="maria@correo.com">
+              <span class="error">Revisa el formato del email.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="motivo">Motivo de la consulta</label>
+            <select id="motivo" name="motivo">
+              <option>Primera visita / revisión</option>
+              <option>Limpieza dental</option>
+              <option>Ortodoncia</option>
+              <option>Implantes</option>
+              <option>Estética dental</option>
+              <option>Dolor o urgencia</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dia">Día preferido</label>
+            <input id="dia" name="dia" type="date" required>
+            <span class="error">Elige un día a partir de hoy.</span>
+          </div>
+
+          <fieldset>
+            <span class="legend">Franja horaria</span>
+            <div class="slots">
+              <label class="slot"><input type="radio" name="franja" value="Mañana (9:00 – 14:00)" checked><span>Mañana</span></label>
+              <label class="slot"><input type="radio" name="franja" value="Tarde (16:00 – 20:30)"><span>Tarde</span></label>
+            </div>
+          </fieldset>
+
+          <div class="consent" id="consent-wrap">
+            <input id="consent" name="consent" type="checkbox" required>
+            <label for="consent">Acepto que Sonrisa Imperial use mis datos para gestionar esta solicitud de cita.</label>
+          </div>
+
+          <button class="btn btn-primary btn-block btn-lg" type="submit">Solicitar cita</button>
+          <small>No es una cita confirmada hasta que hablemos contigo.</small>
+        </form>
+
+        <div class="done" role="status" aria-live="polite">
+          <div class="tick" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+          </div>
+          <h2>Solicitud recibida</h2>
+          <p id="done-text">Te llamamos para confirmar la hora exacta.</p>
+          <dl>
+            <dt>Día</dt><dd id="done-dia">—</dd>
+            <dt>Franja</dt><dd id="done-franja">—</dd>
+            <dt>Motivo</dt><dd id="done-motivo">—</dd>
+          </dl>
+          <button class="btn btn-ghost" type="button" id="edit-btn" style="margin-top:1.4rem">Modificar la solicitud</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rule">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow reveal">Por qué aquí</p>
+        <h2 class="reveal" style="--d:.06s">Sin sorpresas, ni en la silla ni en la factura.</h2>
+      </div>
+      <div class="reasons">
+        <article class="reason reveal">
+          <h3>Diagnóstico sin prisas</h3>
+          <p>La primera visita dura 40 minutos: revisión, radiografía y una explicación clara de lo que vemos. Sin compromiso.</p>
+        </article>
+        <article class="reason reveal" style="--d:.08s">
+          <h3>El mismo equipo</h3>
+          <p>Un odontólogo te acompaña de principio a fin del tratamiento. Ni derivaciones ni caras nuevas cada vez que vienes.</p>
+        </article>
+        <article class="reason reveal" style="--d:.16s">
+          <h3>Presupuesto cerrado</h3>
+          <p>Te lo entregamos por escrito antes de empezar, con las fases detalladas. Lo que firmas es lo que pagas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps-band">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow reveal">Cómo funciona</p>
+        <h2 class="reveal" style="--d:.06s">Tres pasos y ya está.</h2>
+      </div>
+      <ol class="steps" style="list-style:none;margin:0;padding:0">
+        <li class="step reveal">
+          <span class="num">01</span>
+          <h3>Eliges día y franja</h3>
+          <p>Nos dices cuándo te viene bien y por qué motivo vienes. Un minuto de formulario.</p>
+        </li>
+        <li class="step reveal" style="--d:.08s">
+          <span class="num">02</span>
+          <h3>Te llamamos</h3>
+          <p>Confirmamos la hora exacta en menos de dos horas, dentro del horario de la clínica.</p>
+        </li>
+        <li class="step reveal" style="--d:.16s">
+          <span class="num">03</span>
+          <h3>Primera visita</h3>
+          <p>Revisión, radiografía y plan de tratamiento con el presupuesto por escrito en la mano.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="clinica">
+    <div class="wrap clinic">
+      <div>
+        <p class="eyebrow reveal">La clínica</p>
+        <blockquote class="quote reveal" style="--d:.06s;margin:1.2rem 0 0">“Llevaba años evitando al dentista. Aquí me explicaron todo antes de tocarme nada, y el presupuesto no se movió ni un euro.”</blockquote>
+        <p class="quote-by reveal" style="--d:.12s">Marina G. — paciente desde 2022</p>
+      </div>
+      <dl class="facts reveal" style="--d:.1s">
+        <div class="fact">
+          <dt>Dirección</dt>
+          <dd>Calle Velázquez, 118<br>28006 Madrid</dd>
+        </div>
+        <div class="fact">
+          <dt>Horario</dt>
+          <dd>
+            <div class="schedule">
+              <span>Lun – Vie</span><span>9:00 – 20:30</span>
+              <span>Sábado</span><span>9:00 – 14:00</span>
+              <span>Domingo</span><span>Cerrado</span>
+            </div>
+            <span class="status" id="status"><i></i>Abierto ahora</span>
+          </dd>
+        </div>
+        <div class="fact">
+          <dt>Teléfono</dt>
+          <dd><a href="tel:+34912345678">+34 912 34 56 78</a></dd>
+        </div>
+        <div class="fact">
+          <dt>Email</dt>
+          <dd><a href="mailto:citas@sonrisaimperial.es">citas@sonrisaimperial.es</a></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <div>
+        <h2 class="reveal">¿Reservamos tu visita?</h2>
+        <p class="reveal" style="--d:.06s">Un minuto ahora te ahorra la llamada, la espera y la sala de espera llena.</p>
+      </div>
+      <a class="btn btn-lg reveal" href="#cita" data-cta style="--d:.12s">Pedir cita</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Sonrisa Imperial · Clínica dental</span>
+    <nav class="foot-links">
+      <a href="#cita" data-cta>Pedir cita</a>
+      <a href="#clinica">La clínica</a>
+      <a href="tel:+34912345678">Teléfono</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var items = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin:'0px 0px -10% 0px', threshold:0.08 });
+    items.forEach(function(el){ io.observe(el); });
+    /* red de seguridad: si el observador no llega a dispararse, nada se queda invisible */
+    setTimeout(function(){
+      items.forEach(function(el){
+        if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in');
+      });
+    }, 1500);
+  }
+
+  var header = document.getElementById('header');
+  var stick = function(){ header.classList.toggle('stuck', scrollY > 6); };
+  stick(); addEventListener('scroll', stick, { passive:true });
+
+  /* los CTA llevan al formulario y dejan el cursor listo */
+  document.querySelectorAll('[data-cta]').forEach(function(a){
+    a.addEventListener('click', function(){
+      setTimeout(function(){
+        var f = document.getElementById('nombre');
+        if (f && f.offsetParent !== null) f.focus({ preventScroll:true });
+      }, reduce ? 0 : 420);
+    });
+  });
+
+  /* fecha: hoy por defecto, sin días pasados */
+  var pad = function(n){ return (n<10?'0':'') + n; };
+  var t = new Date();
+  var hoy = t.getFullYear()+'-'+pad(t.getMonth()+1)+'-'+pad(t.getDate());
+  var dia = document.getElementById('dia');
+  dia.min = hoy; dia.value = hoy;
+
+  /* validación */
+  var form = document.getElementById('cita-form');
+  var panel = document.getElementById('cita');
+  var consentWrap = document.getElementById('consent-wrap');
+
+  function mark(el, bad){
+    var f = el.closest('.field') || el.closest('.consent');
+    if (f) f.classList.toggle('invalid', bad);
+    return !bad;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var nombre = document.getElementById('nombre');
+    var tel = document.getElementById('tel');
+    var email = document.getElementById('email');
+    var consent = document.getElementById('consent');
+
+    var ok = true;
+    ok = mark(nombre, nombre.value.trim().length < 2) && ok;
+    ok = mark(tel, tel.value.replace(/\D/g,'').length < 9) && ok;
+    ok = mark(email, email.value !== '' && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email.value)) && ok;
+    ok = mark(dia, !dia.value || dia.value < hoy) && ok;
+    consentWrap.classList.toggle('invalid', !consent.checked);
+    if (!consent.checked) ok = false;
+
+    if (!ok){
+      var first = form.querySelector('.invalid input, .invalid select');
+      if (first) first.focus();
+      return;
+    }
+
+    var d = new Date(dia.value + 'T00:00:00');
+    var fecha = new Intl.DateTimeFormat('es-ES', { weekday:'long', day:'numeric', month:'long' }).format(d);
+    document.getElementById('done-text').textContent =
+      'Gracias, ' + nombre.value.trim().split(' ')[0] + '. Te llamamos al ' + tel.value.trim() + ' para confirmar la hora exacta.';
+    document.getElementById('done-dia').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+    document.getElementById('done-franja').textContent = form.franja.value;
+    document.getElementById('done-motivo').textContent = document.getElementById('motivo').value;
+    panel.classList.add('sent');
+    panel.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'center' });
+  });
+
+  document.getElementById('edit-btn').addEventListener('click', function(){
+    panel.classList.remove('sent');
+    document.getElementById('nombre').focus();
+  });
+
+  /* abierto / cerrado */
+  var horario = { 1:[540,1230], 2:[540,1230], 3:[540,1230], 4:[540,1230], 5:[540,1230], 6:[540,840], 0:null };
+  var ahora = new Date();
+  var tramo = horario[ahora.getDay()];
+  var min = ahora.getHours()*60 + ahora.getMinutes();
+  var abierto = tramo && min >= tramo[0] && min < tramo[1];
+  var status = document.getElementById('status');
+  if (!abierto){
+    status.style.color = 'var(--ink-faint)';
+    status.querySelector('i').style.background = 'var(--ink-faint)';
+    status.lastChild.textContent = tramo && min < tramo[0]
+      ? 'Abrimos a las ' + pad(Math.floor(tramo[0]/60)) + ':' + pad(tramo[0]%60)
+      : 'Cerrado ahora';
+  }
+})();
+</script>
