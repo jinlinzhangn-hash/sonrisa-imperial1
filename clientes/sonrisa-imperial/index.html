@@ -596,7 +596,19 @@ button,input,select,textarea{font:inherit;color:inherit}
   font-size:.6rem;font-weight:700;letter-spacing:.08em;color:var(--accent);
   vertical-align:middle;text-transform:uppercase;
 }
-.dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.75rem}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.75rem}
+.car-pause{
+  width:32px;height:32px;flex:none;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:50%;background:transparent;
+  cursor:pointer;color:var(--muted);
+  transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease);
+}
+.car-pause:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-wash)}
+.car-pause svg{width:14px;height:14px}
+.car-pause .ico-play{display:none}
+.car-pause[aria-pressed="true"] .ico-pause{display:none}
+.car-pause[aria-pressed="true"] .ico-play{display:block}
+.dots{display:flex;justify-content:center;gap:.5rem}
 .dots button{
   width:9px;height:9px;padding:0;border-radius:50%;border:0;cursor:pointer;
   background:var(--line-strong);transition:background .2s var(--ease),width .25s var(--ease);
@@ -690,6 +702,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .contact-info a:hover{color:var(--accent)}
 .hours{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1.5rem;font-variant-numeric:tabular-nums}
 .hours span:nth-child(odd){color:var(--muted)}
+.hours .hoy{color:var(--text);font-weight:600}
 .open-now{display:inline-flex;align-items:center;gap:.45rem;margin-top:.7rem;font-size:var(--fs-xs);font-weight:600;color:var(--accent)}
 .open-now i{width:7px;height:7px;border-radius:50%;background:currentColor;display:block;box-shadow:0 0 0 3px var(--accent-wash)}
 
@@ -1324,7 +1337,13 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
         </div>
       </div>
     </div>
-    <div class="dots" id="dots" role="tablist" aria-label="Ir al testimonio"></div>
+    <div class="carousel-nav">
+      <button class="car-pause" type="button" id="car-pause" aria-pressed="false" aria-label="Pausar el paso automático de testimonios">
+        <svg class="ico-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="4" height="14" rx="1.2"/><rect x="13" y="5" width="4" height="14" rx="1.2"/></svg>
+        <svg class="ico-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+      </button>
+      <div class="dots" id="dots" aria-label="Ir a un testimonio"></div>
+    </div>
   </div>
 </section>
 
@@ -1523,9 +1542,9 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
           <dt>Horario</dt>
           <dd>
             <div class="hours">
-              <span>Lun – Vie</span><span>9:00 – 20:30</span>
-              <span>Sábado</span><span>9:00 – 14:00</span>
-              <span>Domingo</span><span>Cerrado</span>
+              <span data-d="1,2,3,4,5">Lun – Vie</span><span data-d="1,2,3,4,5">9:00 – 20:30</span>
+              <span data-d="6">Sábado</span><span data-d="6">9:00 – 14:00</span>
+              <span data-d="0">Domingo</span><span data-d="0">Cerrado</span>
             </div>
             <span class="open-now" id="open-now"><i aria-hidden="true"></i>Abierto ahora</span>
           </dd>
@@ -1716,8 +1735,8 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
     toothClear.hidden = s.length === 0;
 
     if (!s.length) {
-      toothOut.textContent = 'Ninguna pieza marcada todav\u00eda.';
-      formTeeth.innerHTML = 'Sin dientes marcados. Puedes se\u00f1alarlos en el esquema de arriba si vienes por una molestia.';
+      toothOut.textContent = 'Ninguna pieza marcada todavía.';
+      formTeeth.innerHTML = 'Sin dientes marcados. Puedes señalarlos en el esquema de arriba si vienes por una molestia.';
       return;
     }
     s.forEach(function (t) {
@@ -1729,12 +1748,26 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
       chip.appendChild(document.createTextNode(t.getAttribute('data-corto')));
       toothOut.appendChild(chip);
     });
-    formTeeth.innerHTML = 'Env\u00edas ' + (s.length === 1 ? '<b>1 pieza marcada</b>' : '<b>' + s.length + ' piezas marcadas</b>') +
+    formTeeth.innerHTML = 'Envías ' + (s.length === 1 ? '<b>1 pieza marcada</b>' : '<b>' + s.length + ' piezas marcadas</b>') +
       ': ' + listaLarga() + '.';
+  }
+
+  /* si ya ha marcado piezas, que WhatsApp salga con ellas escritas */
+  var wa = $('#wa');
+  var waBase = wa ? wa.getAttribute('href').split('?text=')[0] : null;
+  function actualizarWhatsApp() {
+    if (!waBase) return;
+    var s = marcados();
+    var texto = s.length
+      ? 'Hola, quiero pedir cita para la primera visita gratuita. Me molestan estas piezas: ' +
+        s.map(function (t) { return t.getAttribute('data-corto') + ' (' + t.getAttribute('data-fdi') + ')'; }).join(', ') + '.'
+      : 'Hola, quiero pedir cita para la primera visita gratuita.';
+    wa.href = waBase + '?text=' + encodeURIComponent(texto);
   }
   function alternar(t) {
     t.setAttribute('aria-checked', t.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
     pintarDientes();
+    actualizarWhatsApp();
   }
   teeth.forEach(function (t) {
     t.addEventListener('click', function () { alternar(t); });
@@ -1745,6 +1778,7 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
   toothClear.addEventListener('click', function () {
     teeth.forEach(function (t) { t.setAttribute('aria-checked', 'false'); });
     pintarDientes();
+    actualizarWhatsApp();
     if (teeth[0]) teeth[0].focus();
   });
   pintarDientes();
@@ -1784,9 +1818,37 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
   }
 
   /* ---------- navbar: estado al hacer scroll + progreso + volver arriba ---------- */
+  /* Seccion activa calculada en cada scroll, no con IntersectionObserver.
+     Con un observador, el orden de llegada de las entradas decide cual gana
+     y basta con que no se dispare para que el marcador se quede clavado.
+     Asi es determinista: gana la ultima seccion cuyo inicio ya ha pasado. */
+  var navLinks = $$('.nav-links a');
+  var spySections = navLinks
+    .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+    .filter(Boolean);
+
+  function spy() {
+    if (!spySections.length) return;
+    var linea = window.scrollY + navH + 40;
+    var actual = null;
+    spySections.forEach(function (sec) {
+      if (sec.getBoundingClientRect().top + window.scrollY <= linea) actual = sec;
+    });
+    /* al final del documento gana siempre la ultima, aunque sea corta */
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      actual = spySections[spySections.length - 1];
+    }
+    navLinks.forEach(function (l) {
+      var on = !!actual && l.getAttribute('href') === '#' + actual.id;
+      l.classList.toggle('active', on);
+      if (on) l.setAttribute('aria-current', 'true'); else l.removeAttribute('aria-current');
+    });
+  }
+
   var nav = $('#nav');
   var progress = $('#progress');
   var toTop = $('#to-top');
+  var navH = parseInt(getComputedStyle(root).getPropertyValue('--nav-h'), 10) || 70;
 
   function onScroll() {
     var y = window.scrollY;
@@ -1795,6 +1857,7 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
     var max = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
     revealNear();
+    spy();
   }
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -1804,7 +1867,6 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
   });
 
   /* ---------- scroll suave compensado por la navbar ---------- */
-  var navH = parseInt(getComputedStyle(root).getPropertyValue('--nav-h'), 10) || 70;
   $$('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (ev) {
       var id = a.getAttribute('href');
@@ -1826,24 +1888,6 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
   });
 
   /* ---------- sección activa en la navegación ---------- */
-  var linkFor = {};
-  $$('.nav-links a').forEach(function (a) { linkFor[a.getAttribute('href').slice(1)] = a; });
-  var sections = Object.keys(linkFor).map(function (id) { return document.getElementById(id); }).filter(Boolean);
-
-  if ('IntersectionObserver' in window && sections.length) {
-    var spy = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var link = linkFor[e.target.id];
-        if (!link) return;
-        if (e.isIntersecting) {
-          $$('.nav-links a').forEach(function (l) { l.classList.remove('active'); });
-          link.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    sections.forEach(function (s) { spy.observe(s); });
-  }
-
   /* ---------- menú móvil ---------- */
   var burger = $('#burger');
   var drawer = $('#drawer');
@@ -1911,8 +1955,7 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
   slides.forEach(function (_, i) {
     var b = document.createElement('button');
     b.type = 'button';
-    b.setAttribute('role', 'tab');
-    b.setAttribute('aria-label', 'Testimonio ' + (i + 1));
+    b.setAttribute('aria-label', 'Ver testimonio ' + (i + 1) + ' de ' + slides.length);
     b.addEventListener('click', function () { go(i); restart(); });
     dotsBox.appendChild(b);
   });
@@ -1924,16 +1967,34 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
     dots.forEach(function (d, n) { d.setAttribute('aria-current', n === index ? 'true' : 'false'); });
   }
   function next() { go(index + 1); }
+  var pausado = reduce;   /* si el sistema pide menos movimiento, arranca parado */
+
+  function parar() { if (timer) { clearInterval(timer); timer = null; } }
   function restart() {
-    if (timer) clearInterval(timer);
-    if (!reduce) timer = setInterval(next, 6500);
+    parar();
+    if (!pausado) timer = setInterval(next, 6500);
   }
   go(0);
   restart();
 
   var carousel = $('#carousel');
-  carousel.addEventListener('mouseenter', function () { if (timer) clearInterval(timer); });
+  carousel.addEventListener('mouseenter', parar);
   carousel.addEventListener('mouseleave', restart);
+  /* el raton no es la unica forma de llegar: al enfocar dentro, tambien para */
+  carousel.addEventListener('focusin', parar);
+  carousel.addEventListener('focusout', restart);
+
+  /* WCAG 2.2.2: todo movimiento automatico necesita una forma de detenerlo */
+  var pauseBtn = $('#car-pause');
+  pauseBtn.addEventListener('click', function () {
+    pausado = !pausado;
+    pauseBtn.setAttribute('aria-pressed', pausado ? 'true' : 'false');
+    pauseBtn.setAttribute('aria-label', pausado
+      ? 'Reanudar el paso automático de testimonios'
+      : 'Pausar el paso automático de testimonios');
+    restart();
+  });
+  if (pausado) pauseBtn.setAttribute('aria-pressed', 'true');
 
   /* swipe táctil */
   var x0 = null;
@@ -1961,18 +2022,32 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
 
   /* ---------- abierto / cerrado ahora ---------- */
   var horario = { 1: [540, 1230], 2: [540, 1230], 3: [540, 1230], 4: [540, 1230], 5: [540, 1230], 6: [540, 840], 0: null };
-  var ahora = new Date();
-  var tramo = horario[ahora.getDay()];
-  var minutos = ahora.getHours() * 60 + ahora.getMinutes();
-  var abierto = tramo && minutos >= tramo[0] && minutos < tramo[1];
   var openEl = $('#open-now');
-  if (!abierto) {
-    openEl.style.color = 'var(--muted)';
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    openEl.lastChild.textContent = (tramo && minutos < tramo[0])
-      ? 'Abrimos a las ' + pad(Math.floor(tramo[0] / 60)) + ':' + pad(tramo[0] % 60)
-      : 'Cerrado ahora';
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  function pintarHorario() {
+    var ahora = new Date();
+    var dia = ahora.getDay();
+    var tramo = horario[dia];
+    var minutos = ahora.getHours() * 60 + ahora.getMinutes();
+    var abierto = !!tramo && minutos >= tramo[0] && minutos < tramo[1];
+
+    openEl.style.color = abierto ? '' : 'var(--muted)';
+    openEl.lastChild.textContent = abierto
+      ? 'Abierto ahora'
+      : (tramo && minutos < tramo[0]
+          ? 'Abrimos a las ' + pad(Math.floor(tramo[0] / 60)) + ':' + pad(tramo[0] % 60)
+          : 'Cerrado ahora');
+
+    /* la fila de hoy, resaltada en el cuadro de horarios */
+    $$('.hours span').forEach(function (el) {
+      var dias = el.getAttribute('data-d');
+      el.classList.toggle('hoy', !!dias && dias.split(',').indexOf(String(dia)) !== -1);
+    });
   }
+  pintarHorario();
+  /* una pestana abierta toda la tarde no puede seguir diciendo "abierto" */
+  setInterval(pintarHorario, 60000);
 
   /* ---------- formulario: validación en tiempo real ---------- */
   var form = $('#form');
@@ -2022,7 +2097,7 @@ section[id],div[id]{scroll-margin-top:calc(var(--nav-h) + 18px)}
         'Gracias, ' + nombre.value.trim().split(' ')[0] +
         '. Te llamamos al ' + tel.value.trim() + ' en menos de 2 horas para confirmar la hora exacta.';
       var piezas = listaLarga();
-      $('#done-teeth').textContent = piezas ? 'Piezas que nos has se\u00f1alado: ' + piezas + '.' : '';
+      $('#done-teeth').textContent = piezas ? 'Piezas que nos has señalado: ' + piezas + '.' : '';
       card.classList.add('sent');
       card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     }, 900);
